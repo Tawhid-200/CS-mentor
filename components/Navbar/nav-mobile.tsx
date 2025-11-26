@@ -15,7 +15,9 @@ export const NavMobile = ({ pathname }: { pathname: string }) => {
       <div
         className={`w-full absolute top-[60px] left-0 ${!isOpen && "hidden"}`}
       >
-        <ul className="w-full flex items-baseline justify-between flex-col text-sm gap-8 p-4 border-b border bg-transparent backdrop-blur-xl">
+        <ul
+          className={`w-full flex items-baseline justify-between flex-col text-sm gap-8 p-4 border-b border bg-background backdrop-blur-xl`}
+        >
           {NavNavigations.map((nav, i) => (
             <li key={i}>
               <Link
@@ -31,7 +33,7 @@ export const NavMobile = ({ pathname }: { pathname: string }) => {
             </li>
           ))}
         </ul>
-        <NavAction className="p-4" />
+        <NavAction className="py-4 px-8 bg-background" />
       </div>
     </div>
   );

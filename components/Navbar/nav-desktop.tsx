@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const NavDesktop = ({ pathname }: { pathname: string }) => {
   return (
-    <ul className="flex items-center justify-center gap-4 text-sm ">
+    <ul className="flex items-center justify-center gap-4 text-sm [&_li]:px-2">
       {NavNavigations.map((nav, i) => (
         <li key={i}>
           <Link
