@@ -4,13 +4,16 @@ import { useDebounce } from "use-debounce";
 interface PersistentHistoryProps {
   query: string;
   storageKey: string;
-  maxHistoryStorage: number;
+  maxHistoryStore: number;
 }
+
+type ReturnType = [string[], (removeItem: string) => void];
+
 export function usePersistentHistory({
   query,
   storageKey,
-  maxHistoryStorage,
-}: PersistentHistoryProps) {
+  maxHistoryStore,
+}: PersistentHistoryProps): ReturnType {
   const [dbQuery] = useDebounce(query, 500);
   const [history, setHistory] = useState<string[]>(() => {
     try {
@@ -22,6 +25,13 @@ export function usePersistentHistory({
     }
   });
 
+  const removeQuery = (removeItem: string) => {
+    setHistory((previousHistory) => {
+      const newHistory = previousHistory.filter((item) => item !== removeItem);
+      return newHistory;
+    });
+  };
+
   useEffect(() => {
     if (!dbQuery) return;
     setHistory((previousHistory) => {
@@ -29,12 +39,12 @@ export function usePersistentHistory({
         return previousHistory;
       }
       let newHistory = previousHistory;
-      if (previousHistory.length >= maxHistoryStorage) {
+      if (previousHistory.length >= maxHistoryStore) {
         newHistory = previousHistory.slice(1);
       }
       return [...newHistory, query];
     });
-  }, [dbQuery]);
+  }, [dbQuery, maxHistoryStore]);
 
   useEffect(() => {
     try {
@@ -42,6 +52,7 @@ export function usePersistentHistory({
     } catch (error: any) {
       console.error("Error writing history to Local Storage:", error);
     }
-  }, [history]);
-  return history;
+  }, [history, storageKey]);
+
+  return [history, removeQuery];
 }

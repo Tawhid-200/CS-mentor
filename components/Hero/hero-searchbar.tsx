@@ -7,7 +7,7 @@ import { HeroSearchSuggestion } from "./hero-search-suggestion";
 
 export const HeroSearchbar = () => {
   const [value, setValue] = useState<string>("");
-  const [debounceValue] = useDebounce(value, 1000);
+  const [debounceValue] = useDebounce(value, 500);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   return (
     <>
@@ -39,9 +39,7 @@ export const HeroSearchbar = () => {
           }`}
         />
         {/* Search Suggestions */}
-        {debounceValue && (
-          <HeroSearchSuggestion key={debounceValue} query={debounceValue} />
-        )}
+        {<HeroSearchSuggestion key={debounceValue} query={debounceValue} />}
       </div>
     </>
   );
